@@ -1,9 +1,19 @@
 [package]
-name = "certusvault_cli"
+name = "zerovault"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
+description = "Zero-trust document encryption vault"
+authors = ["Mason Parle"]
+license = "MIT"
+repository = "https://github.com/masonparle/zerovault"
+keywords = ["encryption", "security", "cli", "vault", "cryptography"]
+categories = ["command-line-utilities", "cryptography"]
 
 [dependencies]
-clap = { version = "4.0", features = ["derive"] }
+clap = { version = "4.3", features = ["derive", "cargo"] }
 vault_core = { path = "../crates/vault_core" }
+serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+rpassword = "7.3"
+base64 = "0.21"
+argon2 = "0.5"
