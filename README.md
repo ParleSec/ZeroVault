@@ -1,4 +1,3 @@
-
 # ZeroVault
 
 [![Rust Version](https://img.shields.io/badge/Rust-1.70%2B-orange?style=for-the-badge&logo=rust)](https://www.rust-lang.org/) [![Crypto](https://img.shields.io/badge/Encryption-AES--GCM%20%7C%20Ed25519-blue?style=for-the-badge&logo=lock)](https://docs.rs/aes-gcm) [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
@@ -53,6 +52,13 @@ ZeroVault is particularly useful for developers and professionals seeking a veri
 - Metadata (nonce, salt, signature, pubkey, ciphertext) encoded to Base64
 - Encrypted data structure: `EncryptedData`
 
+### 🖥️ Interactive CLI
+
+- User-friendly interface with interactive prompts
+- Smart defaults for file paths and options
+- Secure password entry with confirmation
+- Optional comments for encrypted files
+
 ## Example Code
 
 ```rust
@@ -69,18 +75,87 @@ let result = decrypt_data(&enc, "mypassword").unwrap();
 - `ed25519-dalek` – Key generation & signature scheme
 - `rand` – CSPRNG (OsRng)
 - `serde` / `serde_json` – Serialization
+- `clap` – Command line argument parsing
+- `rpassword` – Secure password input
 
 ## Usage & CLI
 
-ZeroVault CLI for encrypting and decrypting files via terminal interface.
+ZeroVault CLI provides both interactive and non-interactive modes for encrypting and decrypting files.
+
+### Interactive Mode (Default)
+
+Simply run commands without all required arguments, and ZeroVault will prompt for the missing information:
+
+```bash
+# Interactive encryption (will prompt for input file, password, etc.)
+zerovault encrypt
+
+# Interactive decryption (will prompt for vault file, password, etc.)
+zerovault decrypt
+```
+
+Example interactive session:
+```
+$ zerovault encrypt
+Enter input file path: document.txt
+Enter output file path [document.txt.vault]: 
+Enter encryption password: ********
+Confirm password: ********
+Enter comment (optional): My secure document
+✓ File encrypted successfully
+  Input: document.txt
+  Output: document.txt.vault
+  Size: 1024 bytes
+```
+
+### Command-Line Arguments
+
+For scripting or automation, you can provide all arguments directly:
 
 ```bash
 # Encrypt a file
-zerovault encrypt --input file.pdf --output file.vault
+zerovault encrypt --input file.pdf --output file.vault --password mypassword --non-interactive
 
-# Decrypt
-zerovault decrypt --input file.vault --output file.pdf
+# Decrypt a file
+zerovault decrypt --input file.vault --output file.pdf --password mypassword --non-interactive
+
+# Force overwrite existing files
+zerovault encrypt --input file.pdf --output file.vault --force
 ```
+
+### Additional Commands
+
+```bash
+# Validate a vault file without decrypting
+zerovault validate --input file.vault
+
+# Display information about a vault file
+zerovault info --input file.vault
+
+# Stream encryption/decryption (pipe data through stdin/stdout)
+cat file.txt | zerovault encrypt-stream --password mypassword > file.vault
+cat file.vault | zerovault decrypt-stream --password mypassword > file_decrypted.txt
+
+# Run self-tests
+zerovault test
+```
+
+### Verbose Mode
+
+Add `-v` or `--verbose` for more detailed output:
+
+```bash
+zerovault encrypt --input file.pdf --verbose
+```
+
+### JSON Output
+
+For programmatic usage, add `--json` to get structured JSON output:
+
+```bash
+zerovault info --input file.vault --json
+```
+
 
 ## Future Plans
 
@@ -94,5 +169,3 @@ zerovault decrypt --input file.vault --output file.pdf
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for more details.
 
 ---
-
-
