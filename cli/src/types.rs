@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use vault_core::types::EncryptedData;
+use vault_core::VaultEncryptedData; // Update to use the new type directly
 use std::time::{SystemTime, UNIX_EPOCH};
 
 /// Metadata for the vault file
@@ -40,7 +40,7 @@ impl Default for Metadata {
 #[derive(Serialize, Deserialize)]
 pub struct VaultFile {
     /// The encrypted data
-    pub data: EncryptedData,
+    pub data: VaultEncryptedData,
     
     /// Metadata about the vault file
     #[serde(default)]
@@ -49,7 +49,7 @@ pub struct VaultFile {
 
 impl VaultFile {
     /// Create a new vault file with the given encrypted data and optional comment
-    pub fn new(data: EncryptedData, comment: Option<String>) -> Self {
+    pub fn new(data: VaultEncryptedData, comment: Option<String>) -> Self {
         let mut metadata = Metadata::default();
         metadata.comment = comment;
         
@@ -60,7 +60,7 @@ impl VaultFile {
     }
     
     /// Update the vault file with new encrypted data
-    pub fn update(&mut self, data: EncryptedData) {
+    pub fn update(&mut self, data: VaultEncryptedData) {
         let now = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .expect("Time went backwards")

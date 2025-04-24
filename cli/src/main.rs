@@ -93,6 +93,12 @@ struct EncryptArgs {
     /// Add a comment to the vault file
     #[arg(short, long)]
     comment: Option<String>,
+
+    /// Security profile: interactive | balanced | paranoid
+    #[arg(
+        long, default_value = "interactive",
+        value_parser = ["interactive", "balanced", "paranoid"])]
+    security: String,
 }
 
 #[derive(Args, Clone)]
@@ -122,16 +128,27 @@ fn main() {
     let cli = Cli::parse();
     
     let result = match &cli.command {
-        Commands::Encrypt(args) => commands::encrypt_file(
-            args.input.clone(),
-            args.output.clone(),
-            args.password.clone(),
-            args.comment.clone(),
-            args.force,
-            args.non_interactive,
-            cli.verbose, 
-            cli.json
-        ),
+        Commands::Encrypt(args) => {
+            use vault_core::types::SecurityLevel;
+            let level = match args.security.as_str() {
+                "interactive" => SecurityLevel::Interactive,
+                "balanced"    => SecurityLevel::Balanced,
+                "paranoid"    => SecurityLevel::Paranoid,
+                _             => SecurityLevel::Interactive,
+            };
+        
+            commands::encrypt_file(
+                args.input.clone(),
+                args.output.clone(),
+                args.password.clone(),
+                args.comment.clone(),
+                level,
+                args.force,
+                args.non_interactive,
+                cli.verbose,
+                cli.json,
+            )
+        },
         Commands::Decrypt(args) => commands::decrypt_file(
             args.input.clone(),
             args.output.clone(),

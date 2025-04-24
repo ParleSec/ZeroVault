@@ -1,9 +1,7 @@
-use std::fs;
-use std::io::{self, Write, Read};
+use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 use crate::types::{VaultFile, CommandOutput};
-use vault_core::types::EncryptedData;
-use base64::Engine; // Add Engine trait import here
+use vault_core::types::VaultEncryptedData;
 
 /// Prompt for password securely (no echo)
 pub fn prompt_password(prompt: &str) -> Result<String, io::Error> {
@@ -140,19 +138,13 @@ pub fn output_result(result: CommandOutput, json_format: bool) {
     }
 }
 
-/// Try to parse a file as VaultFile or fallback to legacy EncryptedData
-pub fn parse_vault_file(json: &str) -> Result<(EncryptedData, Option<crate::types::Metadata>), String> {
-    match serde_json::from_str::<VaultFile>(json) {
-        Ok(vault_file) => Ok((vault_file.data, Some(vault_file.metadata))),
-        Err(_) => {
-            // Try parsing as legacy format (just EncryptedData)
-            let enc = serde_json::from_str::<EncryptedData>(json)
-                .map_err(|e| format!("Failed to parse vault file - invalid format: {}", e))?;
-            Ok((enc, None))
-        }
-    }
+/// Try to parse a file as VaultFile
+pub fn parse_vault_file(json: &str) -> Result<(VaultEncryptedData, Option<crate::types::Metadata>), String> {
+    let vault_file: VaultFile = serde_json::from_str(json)
+        .map_err(|e| format!("Failed to parse vault file: {}", e))?;
+    
+    Ok((vault_file.data, Some(vault_file.metadata)))
 }
-
 /// Format a Unix timestamp using chrono
 pub fn format_timestamp(timestamp: u64) -> String {
     use chrono::{DateTime, Utc};

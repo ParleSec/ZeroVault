@@ -2,7 +2,7 @@
 mod tests {
     use crate::types::{VaultFile, Metadata};
     use vault_core::crypto::{encrypt_data, decrypt_data};
-    use vault_core::types::EncryptedData;
+    use vault_core::VaultEncryptedData;
     use std::time::{SystemTime, UNIX_EPOCH};
     
     #[test]
