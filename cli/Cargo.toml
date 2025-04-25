@@ -44,6 +44,12 @@ mime = "0.3"
 mime_guess = "2.0"
 humansize = "2.1"
 argon2 = { version = "0.5", features = ["std", "password-hash"] }
+dirs = "5"         # home-directory helper (cross-platform)
+winreg = { version = "0.50", optional = true, features = ["serialization-serde"] }
+same-file = "1" 
+
+[target.'cfg(windows)'.dependencies]
+winreg = { version = "0.50", features = ["serialization-serde"] }
 
 [dev-dependencies]
 assert_cmd = "2.0"
