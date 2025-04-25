@@ -5,7 +5,7 @@ edition = "2021"
 description = "Fort-Knox document encryption vault with defense-in-depth security"
 authors = ["Mason Parle"]
 license = "MIT"
-repository = "https://github.com/masonparle/zerovault"
+repository = "https://github.com/ParleSec/zerovault"
 keywords = ["encryption", "security", "cli", "vault", "cryptography"]
 categories = ["command-line-utilities", "cryptography", "security"]
 
