@@ -4,8 +4,6 @@
 
 **ZeroVault** is a lightweight cryptographic vault designed for encrypting and verifying sensitive documents using modern, secure encryption primitives. With a simple command like `zerovault encrypt`, your data is protected by multiple layers of strong encryption.
 
-ZeroVault automatically installs itself to `~/.zerovault/bin/` (or Windows equivalent) and adds this location to your PATH.
-
 For detailed installation instructions, see [INSTALL.md](INSTALL.md).
 
 ## Purpose & Motivation
