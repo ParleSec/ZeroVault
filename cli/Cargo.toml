@@ -8,6 +8,7 @@ license = "MIT"
 repository = "https://github.com/ParleSec/zerovault"
 keywords = ["encryption", "security", "cli", "vault", "cryptography"]
 categories = ["command-line-utilities", "cryptography", "security"]
+readme = "README.md"
 
 [dependencies]
 # Core vault functionality

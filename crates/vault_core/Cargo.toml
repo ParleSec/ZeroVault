@@ -8,6 +8,7 @@ license = "MIT"
 repository = "https://github.com/ParleSec/zerovault"
 keywords = ["encryption", "security", "cryptography", "vault", "defense-in-depth"]
 categories = ["cryptography", "security"]
+readme = "README.md"
 
 [dependencies]
 # Primary cryptographic algorithms
