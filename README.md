@@ -261,7 +261,7 @@ Example JSON output:
   "metadata": {
     "comment": "Confidential document",
     "created_at": 1745333818,
-    "version": "2.0.0"
+    "version": "1.0.0"
   },
   "public_key": "YiN4WYqupD3vyefIFh0ESlRRRX2yvOMWGkXQZKW3HH0=",
   "success": true

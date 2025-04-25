@@ -3,7 +3,7 @@ use std::fmt;
 use zeroize::{Zeroize, ZeroizeOnDrop};
 
 /// ZeroVault version identifier
-pub const VAULT_VERSION: &str = "2.0.0";
+pub const VAULT_VERSION: &str = "1.0.0";
 
 /// Primary encryption algorithms supported by ZeroVault
 #[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]

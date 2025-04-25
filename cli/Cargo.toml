@@ -1,6 +1,6 @@
 [package]
 name = "zerovault"
-version = "2.0.0"
+version = "1.0.0"
 edition = "2021"
 description = "Fort-Knox document encryption vault with defense-in-depth security"
 authors = ["Mason Parle"]
@@ -11,7 +11,7 @@ categories = ["command-line-utilities", "cryptography", "security"]
 
 [dependencies]
 # Core vault functionality
-vault_core = { path = "../crates/vault_core", version = "2.0.0" }
+vault_core = { path = "../crates/vault_core", version = "1.0.0" }
 
 # CLI framework
 clap = { version = "4.4", features = ["derive", "cargo", "wrap_help", "env"] }
