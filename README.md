@@ -2,7 +2,8 @@
 
 [![Rust Version](https://img.shields.io/badge/Rust-1.70%2B-orange?style=for-the-badge&logo=rust)](https://www.rust-lang.org/) [![Crypto](https://img.shields.io/badge/Encryption-AES--GCM%20%7C%20ChaCha20%20%7C%20Ed25519-blue?style=for-the-badge&logo=lock)](https://docs.rs/aes-gcm) [![Security](https://img.shields.io/badge/Security-Argon2id%20%7C%20CSPRNG-red?style=for-the-badge&logo=shield)](https://en.wikipedia.org/wiki/Argon2) [![CLI](https://img.shields.io/badge/Interface-CLI-purple?style=for-the-badge&logo=powershell)](https://github.com/clap-rs/clap) [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE) 
 
-**ZeroVault** is a lightweight cryptographic vault designed for encrypting and verifying sensitive documents using modern, secure encryption primitives. With a simple command like `zerovault encrypt`, your data is protected by multiple layers of strong encryption.
+**ZeroVault** is a lightweight cryptographic vault designed for encrypting and verifying sensitive documents using modern, secure encryption primitives. Using 3-layer encrpytion technqiues with signatures, memory protection and serialization, your stays surrounded by a defence-in-depth security architeture.
+With a simple command like `zerovault encrypt`, your data is protected by multiple layers of strong encryption.
 
 For detailed installation instructions, see [INSTALL.md](INSTALL.md).
 
@@ -38,8 +39,8 @@ chmod +x zerovault
 
 - **Triple-layer protection**: Uses AES-256-GCM, ChaCha20-Poly1305, and AES-256-CBC
 - Random nonces and salts per encryption
-- Key derived from password using Argon2id with configurable memory cost (256MB-1GB)
-- Multiple security levels from interactive (faster) to paranoid (maximum security)
+- Key derived from password using Argon2id with aggressive memory cost (1GB)
+- High base security level for maximum security
 
 ### 🧾 Digital Signatures
 
@@ -182,21 +183,6 @@ Enter comment (optional): My secure document
   Output: document.txt.vault
   Size: 1024 bytes
   Comment: My secure document
-```
-
-### Security Profiles
-
-Choose between different security levels:
-
-```bash
-# Fast with 256MB memory (suitable for most uses)
-zerovault encrypt --input document.pdf --security interactive
-
-# Balanced with 512MB memory
-zerovault encrypt --input document.pdf --security balanced
-
-# Maximum with 1GB memory (default)
-zerovault encrypt --input document.pdf --security paranoid
 ```
 
 ### Command-Line Arguments
