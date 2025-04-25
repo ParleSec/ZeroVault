@@ -11,7 +11,7 @@ categories = ["command-line-utilities", "cryptography", "security"]
 
 [dependencies]
 # Core vault functionality
-vault_core = { path = "../crates/vault_core", version = "1.0.0" }
+zero_vault_core = { path = "../crates/vault_core", version = "1.0.0" }
 
 # CLI framework
 clap = { version = "4.4", features = ["derive", "cargo", "wrap_help", "env"] }
@@ -71,5 +71,5 @@ debug = false      # No debug information
 
 [features]
 default = ["secure-memory"]
-secure-memory = ["vault_core/secure-memory"]
-fips = ["vault_core/fips"]
+secure-memory = ["zero_vault_core/secure-memory"]
+fips = ["zero_vault_core/fips"]

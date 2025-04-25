@@ -133,7 +133,7 @@ fn main() {
     
     let result = match &cli.command {
         Commands::Encrypt(args) => {
-            use vault_core::types::SecurityLevel;
+            use zero_vault_core::types::SecurityLevel;
             let level = match args.security.as_str() {
                 "interactive" => SecurityLevel::Interactive,
                 "balanced"    => SecurityLevel::Balanced,

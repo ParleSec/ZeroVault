@@ -1,7 +1,7 @@
 use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
 use rand::{thread_rng, RngCore};
 use std::time::Duration;
-use vault_core::{decrypt_data, encrypt_data, VaultEncryptionParams};
+use zero_vault_core::{decrypt_data, encrypt_data, VaultEncryptionParams};
 
 fn generate_random_data(size: usize) -> Vec<u8> {
     let mut data = vec![0u8; size];

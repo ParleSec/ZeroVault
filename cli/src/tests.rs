@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod tests {
     use crate::types::{VaultFile, Metadata};
-    use vault_core::crypto::{encrypt_data, decrypt_data};
-    use vault_core::VaultEncryptedData;
+    use zero_vault_core::crypto::{encrypt_data, decrypt_data};
+    use zero_vault_core::VaultEncryptedData;
     use std::time::{SystemTime, UNIX_EPOCH};
     
     #[test]

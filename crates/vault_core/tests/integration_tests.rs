@@ -2,7 +2,7 @@ use base64::Engine;
 use rand::{thread_rng, RngCore};
 use std::time::Instant;
 use test_case::test_case;
-use vault_core::{
+use zero_vault_core::{
     decrypt_data, encrypt_data,
     memory::{is_secure_memory_available, SecureBytes, SecureString},
     VaultError,

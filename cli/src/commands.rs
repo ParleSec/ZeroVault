@@ -1,7 +1,7 @@
 use std::fs;
 use std::io::{self, Write, Read};
 use std::path::PathBuf;
-use vault_core::crypto::{encrypt_data, decrypt_data};
+use zero_vault_core::crypto::{encrypt_data, decrypt_data};
 use crate::types::{VaultFile, CommandOutput};
 use crate::utils;
 use base64::Engine;
@@ -12,7 +12,7 @@ pub fn encrypt_file(
     output: Option<PathBuf>,
     password: Option<String>,
     comment: Option<String>,
-    security_level: vault_core::types::SecurityLevel,
+    security_level: zero_vault_core::types::SecurityLevel,
     force: bool,
     non_interactive: bool,
     verbose: u8,

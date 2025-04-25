@@ -32,7 +32,7 @@
 //! ## Usage Example
 //!
 //! ```no_run
-//! use vault_core::{encrypt_data, decrypt_data};
+//! use zero_vault_core::{encrypt_data, decrypt_data};
 //!
 //! // Encrypt data with maximum security
 //! let data = b"Sensitive information";

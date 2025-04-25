@@ -1,7 +1,7 @@
 use std::fs;
 use std::io::{self, Read, Write};
 use std::path::{Path, PathBuf};
-use vault_core::{
+use zero_vault_core::{
     encrypt_data, decrypt_data, VaultEncryptedData, VaultError, 
     memory::{SecureString, SecureBytes}
 };

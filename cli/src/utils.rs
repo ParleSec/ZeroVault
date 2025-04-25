@@ -1,7 +1,7 @@
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 use crate::types::{VaultFile, CommandOutput};
-use vault_core::types::VaultEncryptedData;
+use zero_vault_core::types::VaultEncryptedData;
 
 /// Prompt for password securely (no echo)
 pub fn prompt_password(prompt: &str) -> Result<String, io::Error> {

@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use vault_core::VaultEncryptedData; // Update to use the new type directly
+use zero_vault_core::VaultEncryptedData; // Update to use the new type directly
 use std::time::{SystemTime, UNIX_EPOCH};
 
 /// Metadata for the vault file
