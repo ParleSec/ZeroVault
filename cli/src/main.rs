@@ -1,6 +1,7 @@
 mod types;
 mod utils;
 mod commands;
+mod self_install;
 
 use clap::{Parser, Subcommand, Args, ArgAction, ValueHint};
 use std::path::PathBuf;
@@ -94,10 +95,11 @@ struct EncryptArgs {
     #[arg(short, long)]
     comment: Option<String>,
 
-    /// Security profile: interactive | balanced | paranoid
+    /// !!WIP!! Security profile: 
     #[arg(
-        long, default_value = "interactive",
-        value_parser = ["interactive", "balanced", "paranoid"])]
+        value_parser = ["interactive", "balanced", "paranoid"],
+        long, default_value = "paranoid"
+        )]
     security: String,
 }
 
@@ -125,7 +127,9 @@ struct DecryptArgs {
 }
 
 fn main() {
+    self_install::ensure_installed();
     let cli = Cli::parse();
+
     
     let result = match &cli.command {
         Commands::Encrypt(args) => {
@@ -134,7 +138,7 @@ fn main() {
                 "interactive" => SecurityLevel::Interactive,
                 "balanced"    => SecurityLevel::Balanced,
                 "paranoid"    => SecurityLevel::Paranoid,
-                _             => SecurityLevel::Interactive,
+                _             => SecurityLevel::Paranoid,
             };
         
             commands::encrypt_file(
