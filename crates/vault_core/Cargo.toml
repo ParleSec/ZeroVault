@@ -1,15 +1,85 @@
 [package]
-name = "vault_core"
-version = "0.1.0"
+name = "zero_vault_core"
+version = "1.0.1"
 edition = "2021"
+description = "Fort-Knox level cryptographic security core for ZeroVault"
+authors = ["Mason Parle"]
+license = "MIT"
+repository = "https://github.com/ParleSec/zerovault"
+keywords = ["encryption", "security", "cryptography", "vault", "defense-in-depth"]
+categories = ["cryptography", "security"]
+readme = "README.md"
 
 [dependencies]
-aes-gcm = "0.10"
-argon2 = "0.5"
-base64 = "0.21"
-hex = "0.4"
-zeroize = "1.3"
+# Primary cryptographic algorithms
+aes-gcm = { version = "0.10", features = ["std"] }
+aes = { version = "0.8" }
+cbc = { version = "0.1", features = ["alloc"] }
+chacha20poly1305 = { version = "0.10", features = ["std"] }
+ed25519-dalek = { version = "2.1", features = ["rand_core"] }
+
+num_cpus = "1.16"
+
+# Key derivation algorithms
+argon2 = { version = "0.5", features = ["std", "password-hash"] }
+pbkdf2 = { version = "0.12", features = ["simple"] }
+hmac = "0.12"
+hkdf = "0.12"
+
+# Hash functions
+sha2 = "0.10"
+sha3 = "0.10"
+blake3 = "1.5"
+
+# Random number generation
+rand_core = { version = "0.6", features = ["std"] }
+rand = "0.8"
+getrandom = { version = "0.2", features = ["std"] }
+
+# Memory security
+zeroize = { version = "1.6", features = ["std", "zeroize_derive"] }
+secrecy = "0.8"
+ctor = "0.2"  # Constructor functions for initialization
+
+# Serialization
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-rand_core = "0.6"
-ed25519-dalek = { version = "2.1.1", features = ["rand_core"] }
+bincode = "1.3"
+base64 = "0.21"
+
+# Constant-time operations
+constant_time_eq = "0.2"
+
+# Memory locking on different platforms
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.48", features = [
+    "Win32_System_Memory", 
+    "Win32_Foundation", 
+    "Win32_System_SystemInformation",
+    "Win32_System_Diagnostics_Debug"  # Added this feature for GetSystemInfo
+]}
+
+[dev-dependencies]
+criterion = "0.5"
+tempfile = "3.8"
+quickcheck = "1.0"
+quickcheck_macros = "1.0"
+proptest = "1.2"
+rstest = "0.18"
+hex = "0.4"
+test-case = "3.1"
+
+[features]
+default = ["std", "secure-memory", "defense-in-depth"]
+std = []
+secure-memory = []
+fips = ["secure-memory"]
+defense-in-depth = []
+hardware-backed = []
+
+[[bench]]
+name = "crypto_benchmarks"
+harness = false

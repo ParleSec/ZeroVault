@@ -1,21 +1,22 @@
 use std::fs;
 use std::io::{self, Write, Read};
 use std::path::PathBuf;
-use vault_core::crypto::{encrypt_data, decrypt_data};
+use zero_vault_core::crypto::{encrypt_data, decrypt_data};
 use crate::types::{VaultFile, CommandOutput};
 use crate::utils;
-use base64::Engine; // Add this import for the Engine trait
+use base64::Engine;
 
 /// Encrypt a file with the given arguments
 pub fn encrypt_file(
     input: Option<PathBuf>,
-    output: Option<PathBuf>, 
+    output: Option<PathBuf>,
     password: Option<String>,
     comment: Option<String>,
+    security_level: zero_vault_core::types::SecurityLevel,
     force: bool,
     non_interactive: bool,
-    verbose: u8, 
-    json_format: bool
+    verbose: u8,
+    json_format: bool,
 ) -> Result<(), String> {
     let interactive = !non_interactive;
     
@@ -125,7 +126,8 @@ pub fn encrypt_file(
     }
     
     // Encrypt data
-    let enc = encrypt_data(&data, &password);
+    let enc = encrypt_data(&data, &password)
+        .map_err(|e| format!("Encryption failed: {}", e))?;
     
     // Create vault file with metadata
     let vault_file = VaultFile::new(enc, comment.clone());
@@ -285,14 +287,13 @@ pub fn validate_vault(
             .map_err(|_| format!("Invalid base64 in {} field", field))
     };
     
-    validate_base64("nonce", &enc.nonce)?;
-    validate_base64("ciphertext", &enc.ciphertext)?;
-    validate_base64("signature", &enc.signature)?;
+    validate_base64("primary_nonce", &enc.primary_nonce)?;
+    validate_base64("primary_ciphertext", &enc.primary_ciphertext)?;
+    validate_base64("data_signature", &enc.data_signature)?;
     validate_base64("public_key", &enc.public_key)?;
     
     // Validate salt
-    argon2::password_hash::SaltString::from_b64(&enc.salt)
-        .map_err(|_| "Invalid salt format".to_string())?;
+    validate_base64("master_salt", &enc.master_salt)?;
     
     let output = CommandOutput {
         success: true,
@@ -337,13 +338,13 @@ pub fn show_vault_info(
         .map_err(|e| format!("Failed to get metadata for file: {}", e))?;
     
     if json_format {
-        // Create a structured output for JSON mode
+        // Create a structured output for JSON mode - update field names
         let mut output = serde_json::json!({
             "success": true,
             "file_path": input_path.display().to_string(),
             "file_size": file_metadata.len(),
             "public_key": enc.public_key,
-            "encrypted_data_size": base64::engine::general_purpose::STANDARD.decode(&enc.ciphertext)
+            "encrypted_data_size": base64::engine::general_purpose::STANDARD.decode(&enc.primary_ciphertext) // Changed from ciphertext to primary_ciphertext
                 .map(|v| v.len())
                 .unwrap_or(0),
         });
@@ -363,7 +364,8 @@ pub fn show_vault_info(
         println!("Vault File: {}", input_path.display());
         println!("File Size: {} bytes", file_metadata.len());
         
-        if let Ok(ciphertext) = base64::engine::general_purpose::STANDARD.decode(&enc.ciphertext) {
+        // Changed field access
+        if let Ok(ciphertext) = base64::engine::general_purpose::STANDARD.decode(&enc.primary_ciphertext) {
             println!("Encrypted Data Size: {} bytes", ciphertext.len());
         }
         
@@ -425,8 +427,9 @@ pub fn encrypt_stream(
         eprintln!("Encrypting {} bytes from stdin", buf.len());
     }
     
-    // Encrypt data
-    let enc = encrypt_data(&buf, &password);
+    // Encrypt data - now properly handling the Result
+    let enc = encrypt_data(&buf, &password)
+        .map_err(|e| format!("Encryption failed: {}", e))?;
     
     // Create vault file with metadata (no comment for stream mode)
     let vault_file = VaultFile::new(enc, None);
@@ -495,7 +498,10 @@ pub fn run_tests(verbose: u8, json_format: bool) -> Result<(), String> {
         eprintln!("Test 1: Basic encryption/decryption");
     }
     
-    let encrypted = encrypt_data(test_data, password);
+    // Handle Result from encrypt_data
+    let encrypted = encrypt_data(test_data, password)
+        .map_err(|e| format!("Test 1 failed: {}", e))?;
+        
     let decrypted = decrypt_data(&encrypted, password)
         .map_err(|e| format!("Test 1 failed: {}", e))?;
     

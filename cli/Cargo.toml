@@ -1,20 +1,76 @@
 [package]
 name = "zerovault"
-version = "0.1.0"
-edition = "2024"
-description = "Zero-trust document encryption vault"
+version = "1.0.0"
+edition = "2021"
+description = "Fort-Knox document encryption vault with defense-in-depth security"
 authors = ["Mason Parle"]
 license = "MIT"
-repository = "https://github.com/masonparle/zerovault"
+repository = "https://github.com/ParleSec/zerovault"
 keywords = ["encryption", "security", "cli", "vault", "cryptography"]
-categories = ["command-line-utilities", "cryptography"]
+categories = ["command-line-utilities", "cryptography", "security"]
+readme = "README.md"
 
 [dependencies]
-clap = { version = "4.3", features = ["derive", "cargo"] }
-vault_core = { path = "../crates/vault_core" }
+# Core vault functionality
+zero_vault_core = { path = "../crates/vault_core", version = "1.0.0" }
+
+# CLI framework
+clap = { version = "4.4", features = ["derive", "cargo", "wrap_help", "env"] }
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Serialization
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+
+# Terminal interaction
 rpassword = "7.3"
-base64 = "0.21"
-argon2 = "0.5"
+dialoguer = "0.11"
+indicatif = "0.17"
+console = "0.15"
+
+# Date and time handling
 chrono = "0.4"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Utilities
+base64 = "0.21"
+tempfile = "3.8"
+mime = "0.3"
+mime_guess = "2.0"
+humansize = "2.1"
+argon2 = { version = "0.5", features = ["std", "password-hash"] }
+dirs = "5"         # home-directory helper (cross-platform)
+winreg = { version = "0.50", optional = true, features = ["serialization-serde"] }
+same-file = "1" 
+
+[target.'cfg(windows)'.dependencies]
+winreg = { version = "0.50", features = ["serialization-serde"] }
+
+[dev-dependencies]
+assert_cmd = "2.0"
+predicates = "3.0"
+serial_test = "2.0"
+tempfile = "3.8"
+test-case = "3.1"
+
+[profile.dev]
+opt-level = 1      # Basic optimizations for debug builds
+
+[profile.release]
+lto = true         # Link-time optimization
+codegen-units = 1  # Maximize optimization
+opt-level = 3      # Maximum optimization
+panic = "abort"    # Smaller binary
+strip = true       # Remove debug symbols
+debug = false      # No debug information
+
+[features]
+default = ["secure-memory"]
+secure-memory = ["zero_vault_core/secure-memory"]
+fips = ["zero_vault_core/fips"]

@@ -1,6 +1,7 @@
 mod types;
 mod utils;
 mod commands;
+mod self_install;
 
 use clap::{Parser, Subcommand, Args, ArgAction, ValueHint};
 use std::path::PathBuf;
@@ -93,6 +94,13 @@ struct EncryptArgs {
     /// Add a comment to the vault file
     #[arg(short, long)]
     comment: Option<String>,
+
+    /// !!WIP!! Security profile: 
+    #[arg(
+        value_parser = ["interactive", "balanced", "paranoid"],
+        long, default_value = "paranoid"
+        )]
+    security: String,
 }
 
 #[derive(Args, Clone)]
@@ -119,19 +127,32 @@ struct DecryptArgs {
 }
 
 fn main() {
+    self_install::ensure_installed();
     let cli = Cli::parse();
+
     
     let result = match &cli.command {
-        Commands::Encrypt(args) => commands::encrypt_file(
-            args.input.clone(),
-            args.output.clone(),
-            args.password.clone(),
-            args.comment.clone(),
-            args.force,
-            args.non_interactive,
-            cli.verbose, 
-            cli.json
-        ),
+        Commands::Encrypt(args) => {
+            use zero_vault_core::types::SecurityLevel;
+            let level = match args.security.as_str() {
+                "interactive" => SecurityLevel::Interactive,
+                "balanced"    => SecurityLevel::Balanced,
+                "paranoid"    => SecurityLevel::Paranoid,
+                _             => SecurityLevel::Paranoid,
+            };
+        
+            commands::encrypt_file(
+                args.input.clone(),
+                args.output.clone(),
+                args.password.clone(),
+                args.comment.clone(),
+                level,
+                args.force,
+                args.non_interactive,
+                cli.verbose,
+                cli.json,
+            )
+        },
         Commands::Decrypt(args) => commands::decrypt_file(
             args.input.clone(),
             args.output.clone(),
