@@ -1,6 +1,6 @@
 [package]
 name = "zero_vault_core"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2021"
 description = "Fort-Knox level cryptographic security core for ZeroVault"
 authors = ["Mason Parle"]
