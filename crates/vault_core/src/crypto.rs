@@ -1055,7 +1055,7 @@ fn verify_params_hmac(params: &VaultEncryptionParams, hmac_key: &[u8]) -> Result
 /// Encrypt data with triple-layer protection
 pub fn encrypt_data(data: &[u8], password: &str) -> Result<VaultEncryptedData, VaultError> {
     // Use default parameters with maximum security
-    let mut params = VaultEncryptionParams::with_security(crate::types::SecurityLevel::Interactive);
+    let mut params = VaultEncryptionParams::with_security(crate::types::SecurityLevel::Paranoid);
 
     // Generate salts
     let master_salt = secure_random(32)?;

@@ -64,12 +64,12 @@ pub enum SecurityLevel {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct VaultEncryptionParams {
     /*──────── Algorithm selections ────────*/
-    pub primary_algorithm:    PrimaryAlgorithm,
-    pub secondary_algorithm:  SecondaryAlgorithm,
-    pub tertiary_algorithm:   TertiaryAlgorithm,
-    pub kdf_algorithm:        KdfAlgorithm,
-    pub signature_algorithm:  SignatureAlgorithm,
-    pub hash_algorithm:       HashAlgorithm,
+    pub primary_algorithm: PrimaryAlgorithm,
+    pub secondary_algorithm: SecondaryAlgorithm,
+    pub tertiary_algorithm: TertiaryAlgorithm,
+    pub kdf_algorithm: KdfAlgorithm,
+    pub signature_algorithm: SignatureAlgorithm,
+    pub hash_algorithm: HashAlgorithm,
 
     /*──────── Argon2id (primary KDF) ───────*/
     /// Memory cost in **KiB**
@@ -123,7 +123,6 @@ impl VaultEncryptionParams {
 
 impl Default for VaultEncryptionParams {
     fn default() -> Self {
-        // keep previous behaviour (= Paranoid)
         Self::with_security(SecurityLevel::Paranoid)
     }
 }
