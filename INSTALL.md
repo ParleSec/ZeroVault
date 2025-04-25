@@ -72,64 +72,11 @@ After this one-time setup, you can run `zerovault` from anywhere without specify
    [Environment]::SetEnvironmentVariable("Path", $env:Path, "User")
    ```
 
-
-#### Option 1: Automatic Installation (Recommended)
-
-1. Download the appropriate executable for your Mac:
-
-   Intel Mac:
-   ```bash
-   curl -L -o zerovault https://github.com/ParleSec/zerovault/releases/latest/download/zerovault-macos-amd64
-   ```
-
-   Apple Silicon (M1/M2):
-   ```bash
-   curl -L -o zerovault https://github.com/ParleSec/zerovault/releases/latest/download/zerovault-macos-arm64
-   ```
-
-2. Make it executable:
-   ```bash
-   chmod +x zerovault
-   ```
-
-3. Run the executable (it will self-install):
-   ```bash
-   ./zerovault --help
-   ```
-
-4. Open a new terminal window to recognize PATH changes
-
-
-#### Option 2: Manual Installation
-
-1. Download and make executable as above
-2. Create the destination directory:
-   ```bash
-   mkdir -p ~/.zerovault/bin
-   ```
-3. Move the executable:
-   ```bash
-   mv zerovault ~/.zerovault/bin/
-   ```
-4. Add to your PATH by adding this line to your `~/.zshrc`, `~/.bashrc`, or `~/.profile`:
-   ```bash
-   export PATH="$HOME/.zerovault/bin:$PATH"
-   ```
-5. Reload your shell configuration:
-   ```bash
-   source ~/.zshrc  # or ~/.bashrc or ~/.profile
-   ```
-
 ### Linux
 
 #### Option 1: Automatic Installation (Recommended)
 
 1. Download the appropriate executable:
-
-   Standard Linux:
-   ```bash
-   curl -L -o zerovault https://github.com/ParleSec/zerovault/releases/latest/download/zerovault-linux-amd64
-   ```
 
    Maximum compatibility (static binary):
    ```bash
@@ -148,12 +95,6 @@ After this one-time setup, you can run `zerovault` from anywhere without specify
 
 4. Open a new terminal window to recognize PATH changes
 
-#### Option 2: Debian/Ubuntu Package
-
-```bash
-curl -LO https://github.com/ParleSec/zerovault/releases/latest/download/zerovault_2.0.0_amd64.deb
-sudo dpkg -i zerovault_2.0.0_amd64.deb
-```
 
 #### Option 3: Manual Installation
 
@@ -175,21 +116,6 @@ sudo dpkg -i zerovault_2.0.0_amd64.deb
    source ~/.bashrc  # or ~/.profile
    ```
 
-## Package Managers
-
-### Homebrew (macOS and Linux)
-
-```bash
-brew install ParleSec/tap/zerovault
-```
-
-### Debian/Ubuntu
-
-```bash
-curl -LO https://github.com/ParleSec/zerovault/releases/latest/download/zerovault_2.0.0_amd64.deb
-sudo dpkg -i zerovault_2.0.0_amd64.deb
-```
-
 ## Installation Verification
 
 Verify that ZeroVault is correctly installed:
@@ -201,7 +127,7 @@ zerovault --version
 You should see output displaying the version number, like:
 
 ```
-zerovault 2.0.0
+zerovault 1.0.0
 ```
 
 You can also run a self-test:
