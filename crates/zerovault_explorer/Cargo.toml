@@ -1,0 +1,94 @@
+[package]
+name = "zerovault_explorer"
+version = "0.1.0"
+edition = "2021"
+description = "File explorer integration for ZeroVault encryption"
+authors = ["Mason Parle"]
+license = "MIT"
+repository = "https://github.com/masonparle/zerovault"
+keywords = ["encryption", "security", "gui", "explorer", "context-menu"]
+categories = ["cryptography", "security"]
+
+# Mark as GUI app on Windows to hide console
+[package.metadata.winres]
+OriginalFilename = "zerovault_explorer.exe"
+FileDescription = "ZeroVault File Explorer Integration"
+ProductName = "ZeroVault"
+ProductVersion = "1.0.0.0"
+
+[dependencies]
+# Core zerovault functionality
+zero_vault_core = { path = "../../crates/vault_core", version = "1.0.0" }
+
+# Cross-platform GUI toolkit
+egui = "0.24.0"
+eframe = { version = "0.24.0", features = ["persistence"] }
+rfd = "0.12.0"  # Native file dialogs
+
+# CLI argument parsing
+clap = { version = "4.4", features = ["derive"] }
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Logging & notification
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# OS-specific dependencies
+[target.'cfg(windows)'.dependencies]
+winreg = "0.51"       # Windows registry access
+# Expanded Windows features to include window and console control
+windows-sys = { version = "0.48", features = [
+    "Win32_UI_Shell", 
+    "Win32_System_Registry",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_Foundation",
+    "Win32_System_Console"
+]}
+winapi = { version = "0.3.9", features = ["winuser", "windef", "wincon", "processenv"] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc = "0.2"
+cocoa = "0.24"
+core-foundation = "0.9"
+
+[target.'cfg(unix)'.dependencies]
+which = "4.4"         # Find executables in PATH
+xdg = "2.5"           # XDG Base Directory standard
+dirs = "5.0"          # Find standard directories
+
+# Required on all platforms
+[dependencies.dirs]
+version = "5.0"
+
+[build-dependencies]
+built = "0.6"         # Build-time information
+embed-resource = "2.5" # For embedding icon and application metadata
+
+[dev-dependencies]
+tempfile = "3.8"
+test-case = "3.1"
+
+[features]
+default = []
+windows_integration = []
+macos_integration = []
+linux_integration = []
+
+# Set the Windows subsystem to "windows" (GUI mode) when compiling for release builds
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+# Windows-specific configuration to build as GUI application
+[target.'cfg(windows)'.profile.release]
+rustflags = ["-C", "target-feature=+crt-static", "-C", "link-args=/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup"]

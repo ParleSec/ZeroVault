@@ -1,0 +1,34 @@
+#include <windows.h>
+
+// Application version information
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION     1,0,0,0
+PRODUCTVERSION  1,0,0,0
+FILEFLAGSMASK   0x3fL
+FILEFLAGS       0L
+FILEOS          VOS_NT_WINDOWS32
+FILETYPE        VFT_APP
+FILESUBTYPE     VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4" // U.S. English
+        BEGIN
+            VALUE "CompanyName",      "Mason Parle"
+            VALUE "FileDescription",  "ZeroVault File Explorer Integration"
+            VALUE "FileVersion",      "1.0.0.0"
+            VALUE "InternalName",     "zerovault_explorer"
+            VALUE "LegalCopyright",   "Copyright © 2025 Mason Parle"
+            VALUE "OriginalFilename", "zerovault_explorer.exe"
+            VALUE "ProductName",      "ZeroVault"
+            VALUE "ProductVersion",   "1.0.0.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252 // U.S. English, Windows ANSI
+    END
+END
+
+// Set the application to use GUI subsystem (no console window)
+1 RT_MANIFEST "zerovault_explorer.exe.manifest"
